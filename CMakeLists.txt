@@ -21,16 +21,16 @@ message("CUDA_LIBRARIES = ${CUDA_LIBRARIES}")
 
 # include
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${CUDA_INCLUDE_DIRS})
 
 # for cuda common tools
-if(WIN32)
-    set(CUDA_COMMON_TOOLS_DIR "D:/cuda12sample/cuda-samples-12.0/cuda-samples-12.0/Common")
-else()
-    set(CUDA_COMMON_TOOLS_DIR "/root/dependency/cuda12/cuda-samples-master/Common")
+if (CUDA_FOUND)
+    if(WIN32)
+        set(CUDA_COMMON_TOOLS_DIR "D:/cuda12sample/cuda-samples-12.0/cuda-samples-12.0/Common")
+    else()
+        set(CUDA_COMMON_TOOLS_DIR "/root/dependency/cuda12/cuda-samples-master/Common")
+    endif()
+    message("CUDA_COMMON_TOOLS_DIR = ${CUDA_COMMON_TOOLS_DIR}")
 endif()
-include_directories(${CUDA_COMMON_TOOLS_DIR})
-message("CUDA_COMMON_TOOLS_DIR = ${CUDA_COMMON_TOOLS_DIR}")
 
 # create library
 add_library(ChomoCuLib STATIC
@@ -38,6 +38,8 @@ add_library(ChomoCuLib STATIC
 )
 
 if (CUDA_FOUND)
+    target_include_directories(ChomoCuLib PRIVATE ${CUDA_INCLUDE_DIRS})
+    target_include_directories(ChomoCuLib PRIVATE ${CUDA_COMMON_TOOLS_DIR})
     target_sources(ChomoCuLib PRIVATE src/cudaKernel.cu)
     # link cuda
     target_link_libraries(ChomoCuLib ${CUDA_LIBRARIES})

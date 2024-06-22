@@ -1,5 +1,7 @@
 #include "cudaCal.h"
+#ifdef HAVE_CUDA
 #include <cuda_runtime.h>
+#endif
 #include <iostream>
 
 namespace cudaCal {

@@ -24,6 +24,9 @@ void calculateM(int *a, int *b, int *c, int size) {
     }
 #else
     std::cout << "CUDA is not available." << std::endl;
+    for (int i = 0; i < size; ++i) {
+        c[i] = a[i] + b[i];
+    }
 #endif
 }
 
